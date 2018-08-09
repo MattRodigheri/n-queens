@@ -136,8 +136,9 @@
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
+    
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      var counter = 0; //assuming argument === 0
+      var counter = 0;
       for (var i = 0; i < this.rows().length; i++) {
         if (this.rows()[i][majorDiagonalColumnIndexAtFirstRow] === 1) {
           counter++;
@@ -152,23 +153,48 @@
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      
+      var startIndex = -1 * (this.rows().length);
+      for (var i = startIndex; i < this.rows().length; i++) {
+        if (this.hasMajorDiagonalConflictAt(this._getFirstRowColumnIndexForMajorDiagonalOn(0, i))) {
+          return true;
+        }
+      }
       return false;
     },
-
-
+    
+    
+    //   _getFirstRowColumnIndexForMinorDiagonalOn: function(rowIndex, colIndex) {
+    //   return colIndex + rowIndex;
+    // },
 
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var counter = 0;
+      for (var i = 0; i < this.rows().length; i++) {
+        if (this.rows()[i][minorDiagonalColumnIndexAtFirstRow] === 1) {
+          counter++;
+        }
+        if (counter > 1) {
+          return true;
+        }
+        minorDiagonalColumnIndexAtFirstRow--;
+      }
+      return false; 
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var endIndex = this.rows().length + 2;
+
+      for (var i = 0; i < endIndex; i++) {
+        if (this.hasMinorDiagonalConflictAt(this._getFirstRowColumnIndexForMinorDiagonalOn(0, i))) {
+          return true;
+        }
+      }
+      return false;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
